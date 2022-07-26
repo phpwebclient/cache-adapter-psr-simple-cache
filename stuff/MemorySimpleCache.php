@@ -12,7 +12,7 @@ final class MemorySimpleCache implements CacheInterface
 {
     private array $storage = [];
 
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         if (!$this->has($key)) {
             return $default;
@@ -20,7 +20,7 @@ final class MemorySimpleCache implements CacheInterface
         return $this->storage[$key]['value'] ?? $default;
     }
 
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
     {
         $delta = $this->calculateDelta($ttl);
         if ($delta === 0) {
@@ -36,7 +36,7 @@ final class MemorySimpleCache implements CacheInterface
         return true;
     }
 
-    public function delete($key)
+    public function delete(string $key): bool
     {
         if ($this->has($key)) {
             unset($this->storage[$key]);
@@ -44,13 +44,13 @@ final class MemorySimpleCache implements CacheInterface
         return true;
     }
 
-    public function clear()
+    public function clear(): bool
     {
         $this->storage = [];
         return true;
     }
 
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $result = [];
         foreach ($keys as $key) {
@@ -59,7 +59,7 @@ final class MemorySimpleCache implements CacheInterface
         return $result;
     }
 
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|DateInterval $ttl = null): bool
     {
         $result = true;
         foreach ($values as $key => $value) {
@@ -70,7 +70,7 @@ final class MemorySimpleCache implements CacheInterface
         return $result;
     }
 
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         $result = true;
         foreach ($keys as $key) {
@@ -81,7 +81,7 @@ final class MemorySimpleCache implements CacheInterface
         return $result;
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         if (!array_key_exists($key, $this->storage)) {
             return false;
@@ -101,11 +101,7 @@ final class MemorySimpleCache implements CacheInterface
         return true;
     }
 
-    /**
-     * @param int|DateInterval|null $ttl
-     * @return int|null
-     */
-    private function calculateDelta($ttl): ?int
+    private function calculateDelta(null|int|DateInterval $ttl): ?int
     {
         if (is_null($ttl)) {
             return null;

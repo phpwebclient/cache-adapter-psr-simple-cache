@@ -13,7 +13,7 @@ Install this package and your favorite [psr-16 implementation](https://packagist
 
 Install this package
 ```bash
-composer require webclient/cache-adapter-psr-simple-cache:^1.0
+composer require webclient/cache-adapter-psr-simple-cache:^2.0
 ```
 
 # Usage
